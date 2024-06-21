@@ -385,23 +385,6 @@ function M.apply_text_edits(text_edits, bufnr, offset_encoding)
     return text_edit
   end, text_edits)
 
-  -- Sort text_edits
-  ---@param a lsp.TextEdit | { _index: integer }
-  ---@param b lsp.TextEdit | { _index: integer }
-  ---@return boolean
-  table.sort(text_edits, function(a, b)
-    if a.range.start.line ~= b.range.start.line then
-      return a.range.start.line > b.range.start.line
-    end
-    if a.range.start.character ~= b.range.start.character then
-      return a.range.start.character > b.range.start.character
-    end
-    if a._index ~= b._index then
-      return a._index < b._index
-    end
-    return false
-  end)
-
   -- save and restore local marks since they get deleted by nvim_buf_set_lines
   local marks = {} --- @type table<string,[integer,integer]>
   for _, m in pairs(vim.fn.getmarklist(bufnr)) do
